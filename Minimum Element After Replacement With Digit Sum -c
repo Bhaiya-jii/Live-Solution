@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define FOR(a, b, c) for (int a = b; a < c; a++)
+#define FOR1(a, b, c) for (int a = b; a <= c; ++a)
+#define Rep(i, n) FOR(i, 0, n)
+#define Rep1(i, n) FOR1(i, 1, n)
+#define RepA(ele, nums) for (auto& ele : nums)
+
+class Solution {
+public:
+    int minElement(vector<int>& nums) {
+        int ans = INT_MAX;
+        RepA (num, nums){
+            int sum = 0;
+            string str = to_string(num);
+            RepA (c, str)
+                sum += c - '0';
+            ans = fmin(ans, sum);
+        }
+        return ans;
+    }
+};
