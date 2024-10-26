@@ -1,0 +1,75 @@
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> findSubtreeSizes(vector<int>& parent, string s) {
+        int n = parent.size();
+        vector<vector<int>> tree(n);  // Adjacency list for the tree
+        vector<int> newParent = parent; // New parent relationships to avoid modifying tree while traversing
+        vector<int> subtreeSize(n, 1);  // Initialize subtree sizes with 1 (each node itself is a subtree)
+        
+        // Step 1: Build initial tree structure based on the parent array
+        for (int i = 1; i < n; ++i) {
+            tree[parent[i]].push_back(i);
+        }
+        
+        // Step 2: Update newParent based on the closest ancestor with the same character
+        unordered_map<char, int> lastOccurrence;
+        
+        function<void(int)> dfsSetNewParent = [&](int node) {
+            char ch = s[node];
+            int originalParent = newParent[node]; // Store the original parent
+            
+            // If there's a previous occurrence of this character, update the new parent
+            if (lastOccurrence.count(ch)) {
+                int ancestor = lastOccurrence[ch];
+                if (ancestor != originalParent) {  // Only update if the ancestor is different
+                    newParent[node] = ancestor;
+                }
+            }
+            
+            // Record this node as the latest occurrence of this character
+            int previousAncestor = lastOccurrence.count(ch) ? lastOccurrence[ch] : -1;
+            lastOccurrence[ch] = node;
+            
+            // Recur for all children
+            for (int child : tree[node]) {
+                dfsSetNewParent(child);
+            }
+            
+            // Restore last occurrence to avoid affecting other branches
+            if (previousAncestor == -1) {
+                lastOccurrence.erase(ch);
+            } else {
+                lastOccurrence[ch] = previousAncestor;
+            }
+        };
+        
+        dfsSetNewParent(0);  // Start DFS from the root
+        
+        // Step 3: Rebuild the tree with updated parent relationships
+        tree = vector<vector<int>>(n);  // Reset the adjacency list
+        for (int i = 1; i < n; ++i) {
+            tree[newParent[i]].push_back(i);
+        }
+        
+        // Step 4: Calculate subtree sizes with DFS
+        function<int(int)> dfsCalculateSize = [&](int node) {
+            int size = 1;
+            for (int child : tree[node]) {
+                size += dfsCalculateSize(child);
+            }
+            subtreeSize[node] = size;
+            return size;
+        };
+        
+        dfsCalculateSize(0);  // Calculate subtree sizes starting from the root
+        
+        return subtreeSize;
+    }
+};
