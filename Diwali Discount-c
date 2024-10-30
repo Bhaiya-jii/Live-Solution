@@ -1,0 +1,15 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int A, B;
+    cin >> A >> B;
+
+    // Calculate the amount Chef has to pay
+    int amount_to_pay = max(0, A - B);
+
+    // Output the result
+    cout << amount_to_pay << endl;
+
+    return 0;
+}
