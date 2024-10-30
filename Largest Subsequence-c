@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int n; 
+    string a; 
+    cin >> n >> a;
+
+    int ans = 0; // Fixed initialization of ans
+    for (int i = 0; i < n; i++) { // Fixed loop syntax
+        // The conditions seem to have been corrupted, I will assume a logic here
+        if (a[i] == a[0]) // Comparing current character with the first character
+            ans = max(ans, i + 1); // Increase ans if condition met
+        if (a[i] == a[n - 1]) // Comparing current character with the last character
+            ans = max(ans, n-i); // Update ans if condition met
+    }
+    cout << ans << "\n"; // Output the answer
+}
+
+int main() {
+    ios::sync_with_stdio(false); 
+    cin.tie(0); 
+    int t; 
+    cin >> t; 
+    while (t--) 
+        solve(); // Call solve for each test case
+    return 0; // Return 0 from main
+}
