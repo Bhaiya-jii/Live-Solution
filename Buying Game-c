@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve() {
+    int n;
+    cin >> n;
+
+    long long sum = 0, ans = 0;
+    vector<pair<long long, long long>> a(n);
+
+    // Read the first values
+    for (auto &[x, y]: a) {
+        cin >> x;
+    }
+
+    // Read the second values and calculate the differences
+    for (auto &[x, y]: a) {
+        cin >> y;
+        x -= y;  // Fixed the subtraction operator
+        sum += y; // Sum of the second values
+    }
+
+    // Sort the vector based on the first values
+    sort(a.begin(), a.end());
+    
+    ans = sum; // Initialize ans with the current sum
+    sum += a[0].first; // Add the first element's first value
+
+    // Loop through the sorted pairs
+    for (int i = 1; i < n; i++) {
+        sum += a[i].first; 
+        ans = min(ans, sum); // Update ans with the minimum value
+    }
+
+    cout << ans << "\n"; // Print the result
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    int t;
+    cin >> t; // Read the number of test cases
+
+    while (t--) {
+        solve(); // Solve each test case
+    }
+
+    return 0;
+}
