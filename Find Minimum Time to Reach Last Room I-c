@@ -1,0 +1,55 @@
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <limits.h>
+
+using namespace std;
+
+class Solution {
+public:
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+        int n = moveTime.size();
+        int m = moveTime[0].size();
+        
+        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+
+        pq.push({0, 0, 0}); // {time, row, col}
+        dist[0][0] = 0;
+
+        vector<vector<int>> directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // Up, Right, Down, Left
+
+        while (!pq.empty()) {
+            vector<int> curr = pq.top();
+            pq.pop();
+
+            int time = curr[0];
+            int row = curr[1];
+            int col = curr[2];
+
+            // If we reach the bottom-right corner, return the time
+            if (row == n - 1 && col == m - 1) {
+                return time;
+            }
+
+            // Explore the neighbors
+            for (const auto& dir : directions) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+
+                if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < m) {
+                    int newTime = max(time, moveTime[newRow][newCol]) + 1;
+
+                    // If a new shorter time is found, update the distance and push to the queue
+                    if (newTime < dist[newRow][newCol]) {
+                        dist[newRow][newCol] = newTime;
+                        pq.push({newTime, newRow, newCol});
+                    }
+                }
+            }
+        }
+
+        // If we reach here, it means the bottom-right corner is not reachable
+        return -1;
+    }
+};
