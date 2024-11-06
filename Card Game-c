@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int N, X;
+        cin >> N >> X;
+
+        // Count of even and odd numbers from 1 to N
+        int even_count = N / 2;
+        int odd_count = N - even_count;
+
+        // Adjust count based on the thrown card X
+        if (X % 2 == 0) {
+            // X is even, so we look at the remaining even cards
+            cout << even_count - 1 << endl;
+        } else {
+            // X is odd, so we look at the remaining odd cards
+            cout << odd_count - 1 << endl;
+        }
+    }
+    
+    return 0;
+}
