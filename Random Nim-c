@@ -1,0 +1,34 @@
+MOD = 10**9 + 7
+
+# Function to compute modular inverse using Fermat's Little Theorem
+def mod_inverse(x, mod):
+    return pow(x, mod - 2, mod)
+
+# Function to compute the probability of Alice winning
+def calculate_probability(n, d, stones):
+    # Calculate the probability of Alice winning each roll
+    total_ways = d * d  # Total outcomes for two rolls of a D-sided die
+    alice_winning_ways = d * (d + 1) // 2  # Alice wins or ties
+
+    # Calculate probability as a fraction (P/Q)
+    P = alice_winning_ways
+    Q = total_ways
+
+    # Final probability mod (10^9 + 7)
+    probability = (P * mod_inverse(Q, MOD)) % MOD
+    return probability
+
+# Reading input and processing each test case
+t = int(input().strip())
+results = []
+for _ in range(t):
+    # Read number of piles (N) and sides of dice (D)
+    n, d = map(int, input().strip().split())
+    # Read the initial stone configuration
+    stones = list(map(int, input().strip().split()))
+    
+    # Calculate and store result for this test case
+    results.append(calculate_probability(n, d, stones))
+
+# Output all results
+print("\n".join(map(str, results)))
