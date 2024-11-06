@@ -1,0 +1,12 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int X, Y;
+    cin >> X >> Y;
+    
+    // The maximum number of ice cream cones is the minimum of X and Y
+    cout << min(X, Y) << endl;
+    
+    return 0;
+}
