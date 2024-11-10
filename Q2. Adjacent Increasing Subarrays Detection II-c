@@ -1,0 +1,44 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int maxIncreasingSubarrays(vector<int>& nums) {
+        int n = nums.size();
+
+        // Step 1: Precompute the lengths of strictly increasing runs from each index
+        vector<int> increasingRun(n, 1);
+        for (int i = n - 2; i >= 0; --i) {
+            if (nums[i] < nums[i + 1]) {
+                increasingRun[i] = increasingRun[i + 1] + 1;
+            }
+        }
+
+        // Step 2: Binary search for the maximum value of k
+        int left = 1, right = n / 2;
+        int maxK = 0;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            bool found = false;
+
+            // Step 3: Check if there are two adjacent increasing subarrays of length mid
+            for (int i = 0; i <= n - 2 * mid; ++i) {
+                // Check if the subarrays starting at i and i + mid are both increasing of length mid
+                if (increasingRun[i] >= mid && increasingRun[i + mid] >= mid) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                maxK = mid;       // Update maxK if mid is valid
+                left = mid + 1;   // Try a larger k
+            } else {
+                right = mid - 1;  // Try a smaller k
+            }
+        }
+
+        return maxK;
+    }
+};
