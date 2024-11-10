@@ -1,0 +1,39 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool hasIncreasingSubarrays(vector<int>& nums, int k) {
+        int n = nums.size();
+        
+        for (int i = 0; i <= n - 2 * k; ++i) {
+            bool firstIncreasing = true;
+            bool secondIncreasing = true;
+            
+            // Check if first subarray is strictly increasing
+            for (int j = i; j < i + k - 1; ++j) {
+                if (nums[j] >= nums[j + 1]) {
+                    firstIncreasing = false;
+                    break;
+                }
+            }
+            
+            // If first subarray is not increasing, continue to the next position
+            if (!firstIncreasing) continue;
+            
+            // Check if second subarray is strictly increasing
+            for (int j = i + k; j < i + 2 * k - 1; ++j) {
+                if (nums[j] >= nums[j + 1]) {
+                    secondIncreasing = false;
+                    break;
+                }
+            }
+            
+            // If both subarrays are strictly increasing and adjacent, return true
+            if (firstIncreasing && secondIncreasing) return true;
+        }
+        
+        // If no such adjacent increasing subarrays were found, return false
+        return false;
+    }
+};
